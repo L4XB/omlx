@@ -11,6 +11,10 @@
 namespace nb = nanobind;
 using namespace nb::literals;
 
+namespace omlx::moe_staging {
+void register_bindings(nb::module_& m);
+}
+
 NB_MODULE(_ext, m) {
   m.doc() = "Native Qwen3.5/3.6 prefill kernels for oMLX";
 
@@ -29,6 +33,8 @@ NB_MODULE(_ext, m) {
   m.def(
       "is_nax_available",
       &omlx::qwen35_prefill_kernels::is_nax_available);
+
+  omlx::moe_staging::register_bindings(m);
 
   m.def(
       "set_command_buffer_caps",
@@ -487,19 +493,5 @@ NB_MODULE(_ext, m) {
       "x_sorted"_a,
       "inv_order"_a,
       "scores"_a,
-      "stream"_a = nb::none());
-  m.def(
-      "qwen35_gather_qmm_rhs_nax_ready",
-      &omlx::qwen35_prefill_kernels::qwen35_gather_qmm_rhs_nax_ready);
-  m.def(
-      "qwen35_gather_qmm_rhs_t",
-      &omlx::qwen35_prefill_kernels::qwen35_gather_qmm_rhs_t,
-      "x"_a,
-      "weight"_a,
-      "scales"_a,
-      "biases"_a,
-      "indices"_a,
-      "bits"_a,
-      "group_size"_a,
       "stream"_a = nb::none());
 }
